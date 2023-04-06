@@ -3,6 +3,16 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 
+
+def get_stock_info(ticker: str):
+    ticker = yf.Ticker(ticker)
+    info = ticker.info
+    try:
+        return info['trailingPE'], info['priceToBook']
+
+    except:
+        return info['trailingPE'], 0
+
 def yf_to_df(df, x):
     # S&P 500 2년간 데이터
     stock_data = pd.DataFrame(df.history(start=f"{x.year-5}-{x.month}-{x.day}", end=f"{x.year}-{x.month}-{x.day}"))
@@ -23,6 +33,8 @@ def yf_to_df(df, x):
             'MA120':new_stock_df["MA120"][i]} \
             for i in range(len(new_stock_df.index))]
 
+    
+
     return data
 
 
@@ -33,5 +45,6 @@ def stock_df(tag):
     stock = yf.Ticker(tag)
 
     df_stock = yf_to_df(stock, x)
+    per, pbr = get_stock_info(tag)
 
-    return df_stock
+    return df_stock, per, pbr

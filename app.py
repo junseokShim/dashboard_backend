@@ -16,7 +16,7 @@ def get_stock_data():
     start_date = request_data['startDate']
     end_date = request_data['endDate']
     
-    data = stock_df(stock)
+    data, per, pbr = stock_df(stock)
     
     result_data = []
     
@@ -27,7 +27,7 @@ def get_stock_data():
             result_data.append(item)
 
     # 결과 데이터 JSON 형태로 반환
-    return jsonify({'data': result_data})
+    return jsonify({'data': result_data, 'per': per, 'pbr': pbr})
 
 
 
